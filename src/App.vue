@@ -126,8 +126,8 @@ export default {
         title: 'Значения индекса',
         curveType: 'function',
         legend: { position: 'bottom' },
-        width: 1900,
-        height: 600,
+        width: "",
+        height: 500,
       },
     }
   },
