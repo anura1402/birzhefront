@@ -1,18 +1,20 @@
 <template>
   <div id="app2">
-    <h1>{{msg}}</h1>
-      <h2 for="">Функция: {{getCorrectFunction()}}</h2>
+    <h1 style="margin-bottom: 20px;">{{msg}}</h1>
+      <h2 style="margin-bottom: 40px;" for="">Функция: {{getCorrectFunction()}}</h2>
       <!-- <div>
         <b-table striped hover :items="this.arguments" :fields="this.fields">
-          <template slot="isnable" slot-scope="data">
-            <b-form-group>
-                <input type="checkbox" @change="indexiesCalculation" v-model="data.item.isEnable" />
-            </b-form-group>
+          <template slot="status" slot-scope="data"> -->
+            <!-- <b-form-group> -->
+                <!-- <input type="checkbox" @change="indexiesCalculation" v-model="item.status" /> -->
+            <!-- </b-form-group> -->
+            <!-- <b-form-checkbox></b-form-checkbox>
+        
          </template>
         </b-table>
     </div> -->
       <div>
-      <table>
+      <table style="margin-bottom: 40px;" class="table">
         <thead>
           <tr>
             <th>Название</th>
@@ -25,17 +27,18 @@
             <td>{{argument.name}}</td>
             <td>{{argument.arg}}</td>
             <td>
-              <input type="checkbox" v-model="argument.isEnable"  @change="indexiesCalculation">
+              <input type="checkbox" v-model="argument.status"  @change="indexiesCalculation">
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <GChart
+    <GChart 
     type="LineChart"
     :data="chartData"
     :options="chartOptions"
   />
+
     <router-view class="view"></router-view>
   </div>
 </template>
@@ -49,10 +52,10 @@ export default {
       indexies: new Map,
       msg: 'Расчет значений биржевого индекса',
       functionString: '',
-      fields: ['name', 'arg', 'isEnable'],
+      fields: ['name', 'arg', 'status'],
       arguments: [
         {
-          digit: 0.25, arg: 'x', name:'Лукойл',isEnable: true, isNegative: false, capital: 10,
+          digit: 0.25, arg: 'x', name:'Лукойл',status: true, isNegative: false, capital: 10,
           history: new Map([
             [2000, 825.3],
             [2001, 722.3],
@@ -68,7 +71,7 @@ export default {
       ]),
       },
         {
-          digit: 0.25, arg: 'y', name:'Тинькофф',isEnable: true, isNegative: false ,capital: 20, 
+          digit: 0.25, arg: 'y', name:'Тинькофф',status: true, isNegative: false ,capital: 20, 
           history: new Map([
             [2000, 125.3],
             [2001, 122.3],
@@ -84,7 +87,7 @@ export default {
       ]),
         },
         {
-          digit: 0.25, arg: 'z', name:'АльфаБанк',isEnable: true, isNegative: false ,capital: 30, 
+          digit: 0.25, arg: 'z', name:'АльфаБанк',status: true, isNegative: false ,capital: 30, 
           history: new Map([
             [2000, 125.3],
             [2001, 122.3],
@@ -100,7 +103,7 @@ export default {
       ]),
         },
         {
-          digit: 0.25, arg: 'w', name:'Сбер', isEnable: true, isNegative: false,capital: 40, 
+          digit: 0.25, arg: 'w', name:'Сбер', status: true, isNegative: false,capital: 40, 
           history: new Map([
             [2000, 125.3],
             [2001, 122.3],
@@ -123,8 +126,8 @@ export default {
         title: 'Значения индекса',
         curveType: 'function',
         legend: { position: 'bottom' },
-        width: 1200,
-        height: 300,
+        width: 1900,
+        height: 600,
       },
     }
   },
@@ -156,7 +159,7 @@ export default {
         var yearValSum = 0
         var yearBasisSum = 0
         this.arguments.forEach(function(item, i, array) {
-          if (item.isEnable){
+          if (item.status){
             yearValSum += item.history.get(year) * item.digit
             yearBasisSum += item.history.get(year) + item.capital
           }
@@ -177,7 +180,7 @@ export default {
 
       this.arguments.forEach(function(item, index, array) {
         // проверка что аргумент включен в функцию
-        if (item.isEnable){
+        if (item.status){
           // определение знака перед аргументом в функции
           var znak = ''
           if (item.isNegative){
@@ -209,8 +212,37 @@ export default {
 
 </script>
 
-<style>
+<style type="text/css">
 body {
-  font-family: Helvetica, sans-serif;
-}
+  font-family: Helvetica, sans-serif;}
+  .chart-container {
+    float: left;
+    margin-right: 20px; /* Добавьте отступ справа, если нужно */
+  }
+  .table{
+    border: 1px solid #eee;
+    table-layout: fixed;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .table th {
+    font-weight: bold;
+    padding: 5px;
+    background: #efefef; 
+    text-align: center; 
+    border: 1px solid #dddddd;
+  }
+  .table td{
+    padding: 5px 10px;
+    border: 1px solid #eee;
+    text-align: center; 
+    vertical-align: middle
+  }
+  .table tbody tr:nth-child(odd){
+    background: #fff;
+  }
+  .table tbody tr:nth-child(even){
+    background: #F7F7F7;
+  }
+
 </style>
